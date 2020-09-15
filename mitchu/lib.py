@@ -11,8 +11,17 @@ from pathlib import Path
 import networkx as nx
 
 class Metric:
+    """
+    A metric is a collection of functions which defines some way of looking at the simulation's development over time.
+    Two functions should be defined by the analyst: a `measure` and a `show` function.
+    The measure function returns some property of the current state of the simulation (as defined by `self.context`).
+    The `show` function uses `self.snaps` to display the data gathered by this metric.
+    """
     def __init__(self):
-        self.context = None
+        # This context is defined when the metric is instantiated and added to a simulation
+        self.context = None 
+
+        # This keeps track of specific values of this metric through the course of the simulation
         self.snaps = {}
 
 class Meeting:
