@@ -27,13 +27,38 @@ def mu(x, alpha=1, minT=0, maxT=1):
 
 
 
+class unhappiness(Metric):
 
+    def measure(self):
+        return [ p.hours_per_week() / p.args['extraversion'] for p in self.context.ppl ]
 
+    def show(self, tstart=0, tstop=100, **kwrargs):
+        from itertools import chain
+        
+        alltimes = sorted(self.snaps.keys())
+        alltimes = [x for x in alltimes if tstart<=x<=tstop]
+        
+        for q in np.linspace( 0, 1, 5 ):
+            dd = pd.DataFrame(dict({
+                'unhap': [np.quantile(self.snaps[ t ], q) for t in alltimes]
+            }, t=alltimes))
 
+            plt.plot(dd.t, dd.unhap, label="%0.3f"%q, **kwrargs)
+        
+        plt.xlabel("time")
+        plt.ylabel("actual / desired")
+        plt.legend()
 
 class percent_oversocialized(Metric):
+    
+
+    def __init__(self, oversoc_def=1.5): # *args,**kwargs
+        self.oversoc_def = oversoc_def
+        
+        super().__init__()
+        
     def measure(self):
-        return sum( p.hours_per_week() / p.args['extraversion'] > 1.5 for p in self.context.ppl ) / len(self.context.ppl)
+        return sum( p.hours_per_week() / p.args['extraversion'] > self.oversoc_def for p in self.context.ppl ) / len(self.context.ppl)
     
     def show(self, tstart=0, tstop=100, **kwrargs):
         from itertools import chain
@@ -49,8 +74,15 @@ class percent_oversocialized(Metric):
         plt.xlabel("time")
 
 class percent_lonely(Metric):
+    
+
+    def __init__(self, undersoc_def=0.5): # *args,**kwargs
+        self.undersoc_def = undersoc_def
+        
+        super().__init__()
+        
     def measure(self):
-        return sum( p.hours_per_week() / p.args['extraversion'] < 0.5 for p in self.context.ppl ) / len(self.context.ppl)
+        return sum( p.hours_per_week() / p.args['extraversion'] < self.undersoc_def for p in self.context.ppl ) / len(self.context.ppl)
     
     def show(self, tstart=0, tstop=100, **kwrargs):
         from itertools import chain

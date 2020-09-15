@@ -5,14 +5,14 @@ mitchu.lib module
 -----------------------
 
 .. automodule:: mitchu.lib
-   :members:
-   :undoc-members:
+   :members: sim,Action,Person,Metric
    :show-inheritance:
+   :inherited-members:
 
 mitchu.metrics module
 -----------------------
 
 .. automodule:: mitchu.metrics
    :members: 
-   :undoc-members:
    :show-inheritance:
+   :inherited-members:
