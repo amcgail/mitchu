@@ -1,6 +1,3 @@
-.. toctree::
-   :maxdepth: 2
-   Test<#mitchu.lib.Action>
 
 mitchu.lib module
 -----------------------

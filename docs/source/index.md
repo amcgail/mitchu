@@ -5,8 +5,8 @@
 
    API Documentation <modules>
 
-.. toctree::
    :caption: Examples
+   
    example 1</_static/1.html>
    example 2</_static/2.html>
    example 3</_static/3.html>
