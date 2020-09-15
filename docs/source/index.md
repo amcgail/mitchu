@@ -1,17 +1,20 @@
 ```eval_rst
-.. toctree::
-   :caption: Package Documentation
-   :maxdepth: 2
-   :hidden:
 
-   
-   
-   API reference <modules> 
-   modules
-  
-   
-   Tutorials
-   
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   index
+   mitchu
+
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
 
 ```
 # Welcome to mitchu
