@@ -4,7 +4,7 @@ mitchu package
 mitchu.lib module
 -----------------------
 
-.. automodule:: mitchu
+.. automodule:: mitchu.lib
    :members:
    :undoc-members:
    :show-inheritance:
