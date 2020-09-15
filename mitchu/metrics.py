@@ -1,4 +1,4 @@
-from lib import Metric, Counter, nx, np, pd, plt, Path
+from .lib import Metric, Counter, nx, np, pd, plt, Path
 
 class degree_distribution(Metric):
     def measure(self):
