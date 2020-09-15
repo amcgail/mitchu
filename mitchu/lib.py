@@ -92,17 +92,16 @@ class Person:
                 break
         self.name = n
 
-    """
-    This function is used to add instantiated Actions as available to a person.
-    Each person will consider each of their actions independently of the others, 
-        although their time to action can depend on anything in the environment (the simulation context).
-    See the documentation for `Action` for more details.
-
-    Args:
-        *acts: instantiated actions are passed as arguments to addact
-    """
     def addact(self, *acts):
+        """
+        This function is used to add instantiated Actions as available to a person.
+        Each person will consider each of their actions independently of the others, 
+            although their time to action can depend on anything in the environment (the simulation context).
+        See the documentation for `Action` for more details.
 
+        Args:
+            *acts: instantiated actions are passed as arguments to addact
+        """
         if type(acts[0]) == list:
             for a in acts[0]:
                 return self.addact(a)
@@ -135,6 +134,7 @@ class Action(ABC):
             Samples from an exponential distribution, according to the average wait time returned by `self.act_time()`.
             Remembers its value until cleared using `act.ct()`
     """
+
     def __init__(self):
         self.person = None
         self._next_t = None
@@ -209,6 +209,7 @@ class sim:
         ppl: A list of actors - that is, people. These actors will be associated with actions, and will drive the evolution of the simulation.
         debug(bool): Do you want diagnostic messages, passed through the log function?
     """
+    
     def __init__(self, ppl, debug=False):
         self.ppl = ppl
         self.metrics = {}
