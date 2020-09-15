@@ -180,7 +180,7 @@ class Action(ABC):
         This can only be usefully applied if the individuals have not yet acted, and still are "waiting".
         The time until next action can be recomputed in this way without loss of mathematical rigor, as long as the simulation as a whole satisfies the continuous-time Markov property.
 
-        i.e., $\mathbb{P}\[X>t+s\] = \mathbb{P}\[X>t-s\]\mathbb{P}\[X>s\]$ for any $t\geq s$
+        i.e., $$\mathbb{P}\[X>t+s\] = \mathbb{P}\[X>t-s\]\mathbb{P}\[X>s\]$$ for any $$t\geq s$$
         """
         self._next_t = None
         
@@ -209,7 +209,7 @@ class sim:
         ppl: A list of actors - that is, people. These actors will be associated with actions, and will drive the evolution of the simulation.
         debug(bool): Do you want diagnostic messages, passed through the log function?
     """
-    
+
     def __init__(self, ppl, debug=False):
         self.ppl = ppl
         self.metrics = {}
