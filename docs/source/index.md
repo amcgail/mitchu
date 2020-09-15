@@ -1,10 +1,12 @@
 ```eval_rst
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
    mitchu
+
+   API reference <modules> 
+   modules
 
 
 ```

@@ -9,6 +9,9 @@ from mitchu.lib import *
 
 
 def mu(x, alpha=1, minT=0, maxT=1):
+    """
+    
+    """
     if x <= -1e2:
         return maxT
     if x <= -1e2:
