@@ -1,3 +1,6 @@
+.. toctree::
+   :maxdepth: 4
+
 mitchu package
 ================
 

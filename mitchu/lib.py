@@ -33,19 +33,19 @@ class Metric(ABC):
         self.snaps = {}
 
     @abstractmethod
-    """
-    The `measure` function uses `self.context`, the current state of the simulation, and returns the value of the measurement.
-    This is used for recording any data about the simulation, and will be called at each time-step.
-    This data is stored in the metric's `self.snaps` attribute
-    """
     def measure(self):
+        """
+        The `measure` function uses `self.context`, the current state of the simulation, and returns the value of the measurement.
+        This is used for recording any data about the simulation, and will be called at each time-step.
+        This data is stored in the metric's `self.snaps` attribute
+        """
         return 0
     
     @abstractmethod
-    """
-    Uses `matplotlib` Or other visualization packages to display the data gathered from the simulation in `self.snaps`.
-    """
     def show(self):
+        """
+        Uses `matplotlib` Or other visualization packages to display the data gathered from the simulation in `self.snaps`.
+        """
         plt.plot(range(50), np.sin(np.linspace(0,10,50)))
 
 class Meeting:
@@ -104,7 +104,8 @@ class Person:
     def addact(self, *acts):
 
         if type(acts[0]) == list:
-            return self.addact(*acts)
+            for a in acts[0]:
+                return self.addact(a)
         
         for a in acts:
             if not issubclass(type(a), Action):
