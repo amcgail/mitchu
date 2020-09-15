@@ -70,7 +70,7 @@ html_static_path = ['_static']
 
 master_doc = 'index'
 
-github_doc_root = "https://github.com/amcgail/mitchu/docs"
+github_doc_root = "https://github.com/amcgail/mitchu/tree/master/docs"
 
 # At the bottom of conf.py
 def setup(app):

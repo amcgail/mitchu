@@ -5,34 +5,13 @@
    :hidden:
 
    
-    
-   getting_started
-   main_concepts
+   
    API reference <modules> 
    modules
   
    
    Tutorials
    
-
-.. toctree::
-  :caption: Example's
-  :maxdepth: 2
-  :hidden:
-
-  Death Coverage Analysis <death_coverage>
-
-
-
-.. toctree::
-  :caption: Support
-  :maxdepth: 2
-  :hidden:
-
-  
-  
-  Research paper <https://osf.io/preprints/socarxiv/8tx3v/>
-  Source code & issue tracker <https://github.com/amcgail/knowknow/>
 
 ```
 # Welcome to knowknow

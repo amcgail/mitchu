@@ -1,7 +1,0 @@
-Utilties
-====================
-
-
-.. automodule:: utility
-    :members:
-
