@@ -10,7 +10,11 @@ from matplotlib import pyplot as plt
 from pathlib import Path
 import networkx as nx
 
-class Metric:
+
+from abc import ABC    
+
+
+class Metric(ABC):
     """
     A metric is a collection of functions which defines some way of looking at the simulation's development over time.
     Two functions should be defined by the analyst: a `measure` and a `show` function.
@@ -23,6 +27,14 @@ class Metric:
 
         # This keeps track of specific values of this metric through the course of the simulation
         self.snaps = {}
+
+    @abstractmethod
+    def measure(self):
+        return 0
+    
+    @abstractmethod
+    def show(self):
+        plt.plot(range(50), np.sin(np.linspace(0,10,50)))
 
 class Meeting:
     """
@@ -90,12 +102,34 @@ class Person:
             simulation: the simulation currently running
         """
         simulation.log( "[%s]: %s" % (self.name, message))
-            
-            
-class Action:
+                    
+class Action(ABC):
+    """
+    Action is an abstract class, and should be used when constructing custom actions.
+
+    """
     def __init__(self):
         self.person = None
         self._next_t = None
+
+    """
+    When subclassing `Action`, you must create a function `act`.
+    This uses the current context as well as the actor to make 
+    changes in anything in the context, 
+        including people, places, memberships, relations, etc.
+    """
+    @abstractmethod
+    def act(self, context):
+        return False
+
+    """
+    When subclassing `Action`, you must create a function `act_time`.
+    This returns what will be the mean of an exponential distribution describing how long, on average, a person in this state would go without acting.
+    This parameter will be used to simulate a continuous time Markov process according to the transitions defined in `act`.
+    """
+    @abstractmethod
+    def act_time(self):
+        return float('inf')
 
     def simulate_T(self):
         if self.act_time() <= 0:
@@ -103,7 +137,7 @@ class Action:
         if self.act_time() == float('inf'):
             return float('inf')
         return exponential( self.act_time() )
-        
+    
     @property
     def next_t(self):
         if self._next_t is None:
@@ -131,6 +165,14 @@ class Action:
 
 
 class sim:
+    """
+    This class holds all the context information of a running simulation,
+        and manages the process of simulating.
+    
+    Args:
+        ppl: A list of actors - that is, people. These actors will be associated with actions, and will drive the evolution of the simulation.
+        debug(bool): Do you want diagnostic messages, passed through the log function?
+    """
     def __init__(self, ppl, debug=False):
         self.ppl = ppl
         self.metrics = {}
@@ -140,6 +182,14 @@ class sim:
         self.metvals = {} # (name, time) => val
         
     def addmet(self, *mets):
+        """
+        Metrics are the recordings made as the simulation progresses which allow us to
+        inspect what happened and when.
+        This function should be called to add subclasses of `Metric` to be used while running the simulation.
+
+        Parameters:
+            *mets: any number of arguments of class `Metric`
+        """
         for met in mets:
             mtoadd = met()
             mtoadd.context = self
