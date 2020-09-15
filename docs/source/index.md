@@ -3,7 +3,7 @@
    :maxdepth: 5
    :caption: Contents:
 
-   mitchu
+   API Documentation <modules>
 
 
 ```
