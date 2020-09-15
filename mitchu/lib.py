@@ -20,19 +20,31 @@ class Metric(ABC):
     Two functions should be defined by the analyst: a `measure` and a `show` function.
     The measure function returns some property of the current state of the simulation (as defined by `self.context`).
     The `show` function uses `self.snaps` to display the data gathered by this metric.
+
+    Arguments:
+        simulation: Once the metric is added to a simulation, this refers to that instantiated simulation.
+        snaps(dict): Maps from data collection times to the values returned by the `measure` function at those times.
     """
     def __init__(self):
-        # This context is defined when the metric is instantiated and added to a simulation
-        self.context = None 
+        # This simulation is specified when the metric is instantiated (when calling `sim.addmet`)
+        self.simulation = None 
 
         # This keeps track of specific values of this metric through the course of the simulation
         self.snaps = {}
 
     @abstractmethod
+    """
+    The `measure` function uses `self.context`, the current state of the simulation, and returns the value of the measurement.
+    This is used for recording any data about the simulation, and will be called at each time-step.
+    This data is stored in the metric's `self.snaps` attribute
+    """
     def measure(self):
         return 0
     
     @abstractmethod
+    """
+    Uses `matplotlib` Or other visualization packages to display the data gathered from the simulation in `self.snaps`.
+    """
     def show(self):
         plt.plot(range(50), np.sin(np.linspace(0,10,50)))
 
@@ -80,9 +92,19 @@ class Person:
                 break
         self.name = n
 
-    def addact(self, acts):
-        if type(acts) != list:
-            return self.addact([acts])
+    """
+    This function is used to add instantiated Actions as available to a person.
+    Each person will consider each of their actions independently of the others, 
+        although their time to action can depend on anything in the environment (the simulation context).
+    See the documentation for `Action` for more details.
+
+    Args:
+        *acts: instantiated actions are passed as arguments to addact
+    """
+    def addact(self, *acts):
+
+        if type(acts[0]) == list:
+            return self.addact(*acts)
         
         for a in acts:
             if not issubclass(type(a), Action):
@@ -105,30 +127,36 @@ class Person:
                     
 class Action(ABC):
     """
-    Action is an abstract class, and should be used when constructing custom actions.
+    An abstract class, used to construct custom actions.
 
+    Attributes:
+        next_t(float): 
+            Samples from an exponential distribution, according to the average wait time returned by `self.act_time()`.
+            Remembers its value until cleared using `act.ct()`
     """
     def __init__(self):
         self.person = None
         self._next_t = None
 
-    """
-    When subclassing `Action`, you must create a function `act`.
-    This uses the current context as well as the actor to make 
-    changes in anything in the context, 
-        including people, places, memberships, relations, etc.
-    """
+
     @abstractmethod
     def act(self, context):
+        """
+        When subclassing `Action`, you must create a function `act`.
+        This uses the current context as well as the actor to make 
+        changes in anything in the context, 
+            including people, places, memberships, relations, etc.
+        """
         return False
 
-    """
-    When subclassing `Action`, you must create a function `act_time`.
-    This returns what will be the mean of an exponential distribution describing how long, on average, a person in this state would go without acting.
-    This parameter will be used to simulate a continuous time Markov process according to the transitions defined in `act`.
-    """
+
     @abstractmethod
     def act_time(self):
+        """
+        When subclassing `Action`, you must create a function `act_time`.
+        This returns what will be the mean of an exponential distribution describing how long, on average, a person in this state would go without acting.
+        This parameter will be used to simulate a continuous time Markov process according to the transitions defined in `act`.
+        """
         return float('inf')
 
     def simulate_T(self):
@@ -146,6 +174,13 @@ class Action(ABC):
         return self._next_t
     
     def ct(self):
+        """
+        Call this function if you want individuals to reconsider their next waiting time.
+        This can only be usefully applied if the individuals have not yet acted, and still are "waiting".
+        The time until next action can be recomputed in this way without loss of mathematical rigor, as long as the simulation as a whole satisfies the continuous-time Markov property.
+
+        i.e., $\mathbb{P}\[X>t+s\] = \mathbb{P}\[X>t-s\]\mathbb{P}\[X>s\]$ for any $t\geq s$
+        """
         self._next_t = None
         
     def log(self, message, simulation):
