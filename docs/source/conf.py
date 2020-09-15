@@ -15,7 +15,7 @@ import sys
 import recommonmark
 from recommonmark.transform import AutoStructify
 import sphinx_rtd_theme
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../..'))
 sys.setrecursionlimit(1500)
 
 
