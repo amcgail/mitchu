@@ -1,9 +1,20 @@
 from .lib import Metric, Counter, nx, np, pd, plt, Path
+"""
+A generic degree distribution metric.
+By default the degree of each person `p` is the length of their `p.friends`.
 
+If you want to define a custom degree distribution metric, you can create a subclass of degree_distribution.
+The `measure` function should return a `dict` or `Counter`, which maps from degree to the number of individuals with that degree.
+"""        
 class degree_distribution(Metric):
     def measure(self):
         return Counter( [ len(p.friends) for p in self.context.ppl ] )
     
+    """
+    Shows a stacked area-plot of how the degree distribution changes over time.
+    The x-axis runs froom `tstart` to `tstop`, with # people on the y-axis.
+    Only counts for $0 \leq deg_range < 20$ are displayed.
+    """
     def show(self, tstart=0, tstop=100, deg_range=20):
         from itertools import chain
         
