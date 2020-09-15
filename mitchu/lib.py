@@ -11,7 +11,7 @@ from pathlib import Path
 import networkx as nx
 
 
-from abc import ABC    
+from abc import ABC, abstractmethod  
 
 
 class Metric(ABC):

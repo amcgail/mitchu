@@ -1,4 +1,4 @@
-from lib import *
+from mitchu.lib import *
 
 
 
