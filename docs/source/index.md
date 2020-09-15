@@ -14,18 +14,15 @@
    
 
 ```
-# Welcome to knowknow
+# Welcome to mitchu
 
-Knowknow is a open  source python library  to analyze various metrics for dataset's  made  available by [Web of Scinece](https://mjl.clarivate.com/) and [JSTOR](https://www.jstor.org/) to get customs insights for research citations.
+mitchu is a open source python library which I use to define and run agent based models.
 
-## Install knowknow
+The decision-making of actors is defined by a propensity to act in various ways given their current state and environment, and then a definition of the act itself -- how does it change their state, their connection to others, and others states?
+
+## Install mitchu
 
 1. Make sure that you have [Python 3.6](https://www.python.org/downloads/) or greater installed.
-2. Install knowknow using [PIP](https://pip.pypa.io/en/stable/installing/):
-   ```bash
-   $ pip install knowknow-amcgail
-   ```
-## Main Concepts
-In order to start using knowknow first try to have a better understanding  of key concepts. Please check [main concepts](main_concepts.md) . 
-## Get Started
-Check out [get started guide](getting_started.md) to start building your and analyzing your own dataset's .
+2. Clone the GIT repository
+3. Install the requirements in a virtualenv
+4. Try it out!

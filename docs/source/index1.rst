@@ -10,6 +10,7 @@ Welcome to mitchu's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   intro
    mitchu
 
 
