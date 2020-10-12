@@ -103,8 +103,7 @@ class Person:
             *acts: instantiated actions are passed as arguments to addact
         """
         if type(acts[0]) == list:
-            for a in acts[0]:
-                return self.addact(a)
+            self.addact(*acts[0])
         
         for a in acts:
             if not issubclass(type(a), Action):

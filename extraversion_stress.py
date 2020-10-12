@@ -148,6 +148,9 @@ class unhappiness_max(Metric):
 class end_friendship(Action):
 
     def __init__(self, minT=0.5, maxT=10, alpha=0.2): # *args,**kwargs
+        if minT >= maxT:
+            raise Exception("minT >= maxT")
+
         self.minT = minT
         self.maxT = maxT
         self.alpha = alpha
@@ -158,11 +161,10 @@ class end_friendship(Action):
     def act_time(self):
         #if self.person.hours_per_week() == 0 or self.person.hours_per_week() < self.person.args['extraversion']:
         #    return 1000
-        if self.person.hours_per_week() == 0: return self.maxT
         if self.person.hours_per_week() <= self.person.args['extraversion']: return self.maxT
         
         step1 = mu(
-            x=1 - self.person.args['extraversion'] / self.person.hours_per_week(),
+            x=self.person.hours_per_week() / self.person.args['extraversion'] - 1,
             alpha=self.alpha, # alpha
             minT=self.minT,
             maxT=self.maxT,
@@ -198,6 +200,9 @@ class end_friendship(Action):
 class make_friend(Action):
 
     def __init__(self, minT=0.5, maxT=10, alpha=0.1): # *args,**kwargs
+        if minT >= maxT:
+            raise Exception("minT >= maxT")
+        
         self.minT = minT
         self.maxT = maxT
         self.alpha = alpha
@@ -210,7 +215,7 @@ class make_friend(Action):
         if self.person.hours_per_week() >= self.person.args['extraversion']: return self.maxT
         
         step1 = mu( 
-            x=1 - self.person.args['extraversion'] / self.person.hours_per_week(),
+            x=self.person.args['extraversion'] / self.person.hours_per_week() - 1,
             alpha=self.alpha, # alpha
             minT=self.minT,
             maxT=self.maxT

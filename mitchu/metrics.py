@@ -53,7 +53,40 @@ class prob_action(Metric):
             for pname in self.names
         ]
     
-    def show(self, which, order=None, maxT=None, maxTime=None):
+    def show(self, which, order=None, maxT=None):
+        alltimes = sorted(self.snaps.keys())
+        
+        
+        if order is None:
+            allpeople = range(max(len(x) for x in self.snaps.values()))
+        else:
+            allpeople = [ 
+                self.names.index( n )
+                for n in order
+            ]
+            
+        mw = len(alltimes)
+        mh = len(allpeople)
+        
+        tos = np.zeros(shape=(mh,mw))-10
+        for i,t in enumerate(alltimes):
+            for pi in allpeople:
+                myval = -1
+                thisss = self.snaps[t]
+                if len(thisss) <= pi:
+                    myval = -1
+                else:
+                    myval = thisss[pi][which]
+                    
+                if maxT is not None:
+                    myval = min(maxT, myval)
+                tos[pi,i] = myval
+        
+        plt.imshow(tos)
+        return tos
+
+    
+    def show_agg(self, which, order=None, agg=None):
         alltimes = sorted(self.snaps.keys())
         
         
@@ -84,8 +117,10 @@ class prob_action(Metric):
                 if maxT is not None:
                     myval = min(maxT, myval)
                 tos[pi,i] = myval
+
+        final = [ agg(tos[i,:]) for i in range(len(allpeople)) ]
+        plt.plot(final)
         
-        plt.imshow(tos)
         return tos
     
 class network(Metric):
@@ -102,6 +137,8 @@ class network(Metric):
     def show(self, ts=None, animate=True, fname=None, nodecolor=None, weight_mod=1, maxT=None):
         
         g = nx.Graph()
+
+        # create the arrangement for the nodes, and put them there...
         self.allnames = set()
         for t in np.linspace( min(self.snaps), max(self.snaps), 10 ):
             myt = max(tt for tt in self.snaps if tt <= t)
@@ -112,10 +149,9 @@ class network(Metric):
             self.allnames.update({t for (_,t,_) in snp})
             
         g.add_nodes_from(self.allnames.difference(set(g.nodes())))
-
         pos = nx.spring_layout(g, k=0.2)
         
-        
+        # make a little diahrrama, showing different times `ts`
         if ts is not None:
             plt.figure(figsize=((3 * 7),(len(ts)//3+1)*5))
             for i,t in enumerate(ts):
@@ -144,9 +180,11 @@ class network(Metric):
                     images.append(imageio.imread(filename))
                     plt.close()
                     
-                imageio.mimsave('movie.gif', images)
-                from IPython.display import HTML,display
-                display(HTML('<img src="movie.gif">'))
+                imageio.mimsave('temp/movie.gif', images)
+                from IPython.display import HTML,display,Image
+                #display(HTML('<img src="movie.gif">'))
+                with open('temp/movie.gif','rb') as f:
+                    display(Image(data=f.read(), format='png'))
             else:
                 raise Exception("weird combination of arguments to network 'show'")
                 
